@@ -191,8 +191,8 @@ class FederatedClient(object):
             
             
             time_start_emit = time.time()
-            fo.write("time_start_emit:    " + str(time_start_emit) + "\n")
             print("------------------------------------------------time_start_emit: ", time_start_emit-time_start)
+            fo.write("time_start_emit:    " + str(time_start_emit) + "\n")
 
             self.sio.emit('client_update', resp)
             
