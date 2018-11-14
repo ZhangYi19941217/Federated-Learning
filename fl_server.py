@@ -347,6 +347,9 @@ class FLServer(object):
         # by default each client cnn is in its own "room"
        
         for rid in client_sids_selected:
+            time_start_train_next_round = time.time()
+            print("-----------------------------------------time_start_train_next_round: ", time_start_train_next_round-time_start)
+            fo.write(str(self.current_round) + "    " + rid + "    time_start_train_next_round:    " + str(time_start_train_next_round) + "\n")
             emit('request_update', {
                     'model_id': self.model_id,
                     'round_number': self.current_round,
@@ -355,10 +358,6 @@ class FLServer(object):
                     'weights_format': 'pickle',
                     'run_validation': self.current_round % FLServer.ROUNDS_BETWEEN_VALIDATIONS == 0,
                 }, room=rid)
-       
-            time_start_train_next_round = time.time()
-            fo.write(str(self.current_round) + "    " + rid + "    time_start_train_next_round:    " + str(time_start_train_next_round) + "\n")
-            print("-----------------------------------------time_start_train_next_round: ", time_start_train_next_round-time_start)
             
         time_finish_train_next_round = time.time()
         print("---------------------------------------time_finish_train_next_round: ", time_finish_train_next_round-time_start)
