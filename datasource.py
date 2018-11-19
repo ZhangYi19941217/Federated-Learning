@@ -90,12 +90,20 @@ class Mnist(DataSource):
     def fake_non_iid_data(self, min_train=100, max_train=1000, data_split=(.6,.3,.1)):        
         # my_class_distr = np.array([np.random.random() for _ in range(self.classes.shape[0])])
         # my_class_distr /= np.sum(my_class_distr)
+        
+        print("1111111111111111")
+        
         my_class_distr = [1. / self.classes.shape[0] * self.classes.shape[0]] if Mnist.IID \
                 else self.gen_dummy_non_iid_weights()
+        
+        
+        print("222222222222222222")
         
         train_size = random.randint(min_train, max_train)
         test_size = int(train_size / data_split[0] * data_split[1])
         valid_size = int(train_size / data_split[0] * data_split[2])
+        
+        print("333333333333333333")
 
         train_set = [self.sample_single_non_iid(self.x_train, self.y_train, my_class_distr) for _ in range(train_size)]
         test_set = [self.sample_single_non_iid(self.x_test, self.y_test, my_class_distr) for _ in range(test_size)]
