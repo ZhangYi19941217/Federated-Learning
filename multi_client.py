@@ -1,11 +1,12 @@
 from fl_client import FederatedClient
+from fl_client import FL_run
 import datasource
 import multiprocessing
 import threading
 import time
 
 def start_client():
-    c = FederatedClient("172.31.14.70", 5000, datasource.Mnist)
+    c = FL_run()
 
 
 if __name__ == '__main__':
