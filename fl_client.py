@@ -96,8 +96,8 @@ class FederatedClient(object):
         self.time_start = time.time()
         self.fo = open(fo_name, "w")
         self.f_training = open(f_training_name, "w") 
-        print("------------------------------------------------time_start: ", time_start)
-        self.fo.write("time_start:    " + str(time_start) + "\n")
+        print("------------------------------------------------time_start: ", self.time_start)
+        self.fo.write("time_start:    " + str(self.time_start) + "\n")
         
         self.local_model = None
         self.datasource = datasource()
