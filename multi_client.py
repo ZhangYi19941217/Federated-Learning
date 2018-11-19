@@ -1,5 +1,4 @@
 from fl_client import FederatedClient
-from fl_client import FL_run
 import datasource
 import multiprocessing
 import threading
