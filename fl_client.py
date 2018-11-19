@@ -258,6 +258,17 @@ class FederatedClient(object):
 #         super(PushBasedClient, self).__init__()    
 
 
+class FL_run(object):
+    fo = open("timeline_clinet.txt", "w")
+    f_training = open("time_training.txt", "w")
+    time_start = time.time()
+    
+    def __init__(self):
+        print("------------------------------------------------time_start: ", time_start)
+        fo.write("time_start:    " + str(time_start) + "\n")
+        FederatedClient("172.31.14.70", 5000, datasource.Mnist)
+
+
 if __name__ == "__main__":
     
     fo = open("timeline_clinet.txt", "w")
