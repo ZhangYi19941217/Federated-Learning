@@ -48,7 +48,7 @@ class LocalModel(object):
     def train_one_round(self):
         
         time_start_train_one_round = time.time()
-        print("------------------------------------------------time_start_train_one_round: ", time_start_train_one_round-time_start)
+        #print("------------------------------------------------time_start_train_one_round: ", time_start_train_one_round-time_start)
         #fo.write("time_start_train_one_round:    " + str(time_start_train_one_round) + "\n")
         
         self.model.compile(loss=keras.losses.categorical_crossentropy,
@@ -66,7 +66,7 @@ class LocalModel(object):
         print('Train accuracy:', score[1])
         
         time_finish_train_one_round = time.time()
-        print("------------------------------------------------time_finish_train_one_round: ", time_finish_train_one_round-time_start)
+        #print("------------------------------------------------time_finish_train_one_round: ", time_finish_train_one_round-time_start)
         #fo.write("time_finish_train_one_round:    " + str(time_finish_train_one_round) + "\n")
         
         return self.model.get_weights(), score[0], score[1]
@@ -91,7 +91,14 @@ class LocalModel(object):
 class FederatedClient(object):
     MAX_DATASET_SIZE_KEPT = 1200
 
-    def __init__(self, server_host, server_port, datasource):
+    def __init__(self, server_host, server_port, datasource, fo_name, f_training_name):
+        
+        self.time_start = time.time()
+        self.fo = open(fo_name, "w")
+        self.f_training = open(f_training_name, "w") 
+        print("------------------------------------------------time_start: ", time_start)
+        self.fo.write("time_start:    " + str(time_start) + "\n")
+        
         self.local_model = None
         self.datasource = datasource()
 
@@ -115,13 +122,13 @@ class FederatedClient(object):
         )
         
         time_fake_data_done = time.time()
-        print("------------------------------------------------time_fake_data_done: ", time_fake_data_done-time_start)
+        print("------------------------------------------------time_fake_data_done: ", time_fake_data_done-self.time_start)
         #fo.write("time_fake_data_done:    " + str(time_fake_data_done) + "\n")
         
         self.local_model = LocalModel(model_config, fake_data)
         
         time_local_model_done = time.time()
-        print("------------------------------------------------time_local_model_done: ", time_local_model_done-time_start)
+        print("------------------------------------------------time_local_model_done: ", time_local_model_done-self.time_start)
         #fo.write("time_local_model_done:    " + str(time_local_model_done) + "\n")
         
         # ready to be dispatched for training
@@ -131,7 +138,7 @@ class FederatedClient(object):
             })
         
         time_after_emit = time.time()
-        print("------------------------------------------------time_after_emit: ", time_after_emit-time_start)
+        print("------------------------------------------------time_after_emit: ", time_after_emit-self.time_start)
         #fo.write("time_after_emit:    " + str(time_after_emit) + "\n")
 
 
@@ -152,8 +159,8 @@ class FederatedClient(object):
         def on_request_update(*args):
             
             time_start_request_update = time.time()
-            fo.write("time_start_request_update:    " + str(time_start_request_update) + "\n")
-            print("------------------------------------------------time_start_request_update: ", time_start_request_update-time_start)
+            self.fo.write("time_start_request_update:    " + str(time_start_request_update) + "\n")
+            print("------------------------------------------------time_start_request_update: ", time_start_request_update-self.time_start)
             
             req = args[0]
             # req:
@@ -174,7 +181,7 @@ class FederatedClient(object):
             my_weights, train_loss, train_accuracy = self.local_model.train_one_round()
             
             time_end_training = time.time()
-            f_training.write("time_training:    " + str(time_end_training-time_start_training) + "\n")
+            self.f_training.write("time_training:    " + str(time_end_training-time_start_training) + "\n")
             
             resp = {
                 'round_number': req['round_number'],
@@ -191,14 +198,14 @@ class FederatedClient(object):
             
             
             time_start_emit = time.time()
-            print("------------------------------------------------time_start_emit: ", time_start_emit-time_start)
-            fo.write("time_start_emit:    " + str(time_start_emit) + "\n")
+            print("------------------------------------------------time_start_emit: ", time_start_emit-self.time_start)
+            self.fo.write("time_start_emit:    " + str(time_start_emit) + "\n")
 
             self.sio.emit('client_update', resp)
             
             time_finish_emit = time.time()
             #fo.write("time_finish_emit:    " + str(time_finish_emit) + "\n")
-            print("------------------------------------------------time_finish_emit: ", time_finish_emit-time_start)
+            print("------------------------------------------------time_finish_emit: ", time_finish_emit-self.time_start)
 
 
         def on_stop_and_eval(*args):
@@ -258,14 +265,6 @@ class FederatedClient(object):
 #         super(PushBasedClient, self).__init__()    
 
 
-class FL_run(object):
-    fo = open("timeline_clinet.txt", "w")
-    f_training = open("time_training.txt", "w")
-    time_start = time.time()
-    
-    print("------------------------------------------------time_start: ", time_start)
-    fo.write("time_start:    " + str(time_start) + "\n")
-    FederatedClient("172.31.14.70", 5000, datasource.Mnist)
 
 
 if __name__ == "__main__":
