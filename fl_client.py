@@ -150,8 +150,8 @@ class FederatedClient(object):
         def on_disconnect():
             print('disconnect')
             self.sio.disconnect(true)
-            fo.close()
-            f_training.close()
+            self.fo.close()
+            self.f_training.close()
 
         def on_reconnect():
             print('reconnect')
