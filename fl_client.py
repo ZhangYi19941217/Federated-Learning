@@ -263,10 +263,9 @@ class FL_run(object):
     f_training = open("time_training.txt", "w")
     time_start = time.time()
     
-    def __init__(self):
-        print("------------------------------------------------time_start: ", time_start)
-        fo.write("time_start:    " + str(time_start) + "\n")
-        FederatedClient("172.31.14.70", 5000, datasource.Mnist)
+    print("------------------------------------------------time_start: ", time_start)
+    fo.write("time_start:    " + str(time_start) + "\n")
+    FederatedClient("172.31.14.70", 5000, datasource.Mnist)
 
 
 if __name__ == "__main__":
