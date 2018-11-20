@@ -150,8 +150,6 @@ class FederatedClient(object):
         def on_disconnect():
             print('disconnect')
             self.sio.disconnect(true)
-            self.fo.close()
-            self.f_training.close()
 
         def on_reconnect():
             print('reconnect')
@@ -220,6 +218,8 @@ class FederatedClient(object):
                 'test_accuracy': test_accuracy
             }
             self.sio.emit('client_eval', resp)
+            self.fo.close()
+            self.f_training.close()
 
 
         self.sio.on('connect', on_connect)
