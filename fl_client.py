@@ -269,11 +269,7 @@ class FederatedClient(object):
 
 if __name__ == "__main__":
     
-    fo = open("timeline_clinet.txt", "w")
-    f_training = open("time_training.txt", "w")
+    fo_name = "timeline_clinet.txt"
+    f_training_name = "time_training.txt"
     
-    time_start = time.time()
-    print("------------------------------------------------time_start: ", time_start)
-    fo.write("time_start:    " + str(time_start) + "\n")
-    
-    FederatedClient("172.31.14.70", 5000, datasource.Mnist)
+    FederatedClient("172.31.14.70", 5000, datasource.Mnist, fo_name, f_training_name)
