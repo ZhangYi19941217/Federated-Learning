@@ -93,11 +93,13 @@ class FederatedClient(object):
 
     def __init__(self, server_host, server_port, datasource, fo_name, f_training_name):
         
-        self.time_start = time.time()
-        self.fo = open(fo_name, "w")
-        self.f_training = open(f_training_name, "w") 
+        self.fo_name = fo_name
+        self.f_training_name = f_training_name
+        self.time_start = time.time()         
+        
         print("------------------------------------------------time_start: ", self.time_start)
-        self.fo.write("time_start:    " + str(self.time_start) + "\n")
+        with open(self.fo_name, 'w') as fo:
+            fo.write("time_start:    " + str(self.time_start) + "\n")
         
         self.local_model = None
         self.datasource = datasource()
@@ -157,7 +159,8 @@ class FederatedClient(object):
         def on_request_update(*args):
             
             time_start_request_update = time.time()
-            self.fo.write("time_start_request_update:    " + str(time_start_request_update) + "\n")
+            with open(self.fo_name, 'w') as fo:
+                fo.write("time_start_request_update:    " + str(time_start_request_update) + "\n")
             print("------------------------------------------------time_start_request_update: ", time_start_request_update-self.time_start)
             
             req = args[0]
@@ -175,11 +178,11 @@ class FederatedClient(object):
             self.local_model.set_weights(weights)
             
             time_start_training = time.time()
-            
             my_weights, train_loss, train_accuracy = self.local_model.train_one_round()
-            
             time_end_training = time.time()
-            self.f_training.write("time_training:    " + str(time_end_training-time_start_training) + "\n")
+            
+            with open(self.f_training_name, 'w') as f_training:
+                f_training.write("time_training:    " + str(time_end_training-time_start_training) + "\n")
             
             resp = {
                 'round_number': req['round_number'],
@@ -197,7 +200,9 @@ class FederatedClient(object):
             
             time_start_emit = time.time()
             print("------------------------------------------------time_start_emit: ", time_start_emit-self.time_start)
-            self.fo.write("time_start_emit:    " + str(time_start_emit) + "\n")
+            
+            with open(self.fo_name, 'w') as fo:
+                fo.write("time_start_emit:    " + str(time_start_emit) + "\n")
 
             self.sio.emit('client_update', resp)
             
