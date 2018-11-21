@@ -350,7 +350,10 @@ class FLServer(object):
         for rid in client_sids_selected:
             time_start_train_next_round = time.time()
             print("-----------------------------------------time_start_train_next_round: ", time_start_train_next_round-time_start)
-            fo.write(str(self.current_round) + "    " + rid + "    time_start_train_next_round:    " + str(time_start_train_next_round) + "\n")
+            
+            with open("timeline_server.txt", 'a') as fo:
+                fo.write(str(self.current_round) + "    " + rid + "    time_start_train_next_round:    " + str(time_start_train_next_round) + "\n")
+        
             emit('request_update', {
                     'model_id': self.model_id,
                     'round_number': self.current_round,
