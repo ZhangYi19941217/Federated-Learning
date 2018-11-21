@@ -98,7 +98,7 @@ class FederatedClient(object):
         self.time_start = time.time()         
         
         print("------------------------------------------------time_start: ", self.time_start)
-        with open(self.fo_name, 'w') as fo:
+        with open(self.fo_name, 'a') as fo:
             fo.write("time_start:    " + str(self.time_start) + "\n")
         
         self.local_model = None
@@ -159,7 +159,7 @@ class FederatedClient(object):
         def on_request_update(*args):
             
             time_start_request_update = time.time()
-            with open(self.fo_name, 'w') as fo:
+            with open(self.fo_name, 'a') as fo:
                 fo.write("time_start_request_update:    " + str(time_start_request_update) + "\n")
             print("------------------------------------------------time_start_request_update: ", time_start_request_update-self.time_start)
             
@@ -181,7 +181,7 @@ class FederatedClient(object):
             my_weights, train_loss, train_accuracy = self.local_model.train_one_round()
             time_end_training = time.time()
             
-            with open(self.f_training_name, 'w') as f_training:
+            with open(self.f_training_name, 'a') as f_training:
                 f_training.write("time_training:    " + str(time_end_training-time_start_training) + "\n")
             
             resp = {
@@ -201,7 +201,7 @@ class FederatedClient(object):
             time_start_emit = time.time()
             print("------------------------------------------------time_start_emit: ", time_start_emit-self.time_start)
             
-            with open(self.fo_name, 'w') as fo:
+            with open(self.fo_name, 'a') as fo:
                 fo.write("time_start_emit:    " + str(time_start_emit) + "\n")
 
             self.sio.emit('client_update', resp)
