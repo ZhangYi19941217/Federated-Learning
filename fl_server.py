@@ -193,7 +193,8 @@ class FLServer(object):
 
         @self.socketio.on('connect')
         def handle_connect():
-            f_client.write(request.sid + "\n")
+            with open("clients.txt", 'a') as f_client:
+                f_client.write(request.sid + "\n")
             print(request.sid, "connected")
 
         @self.socketio.on('reconnect')
@@ -230,7 +231,9 @@ class FLServer(object):
             
             
             time_start_client_update = time.time()
-            fo.write(str(self.current_round) + "    " + request.sid + "    time_start_client_update:    " + str(time_start_client_update) + "\n")
+            
+            with open("timeline_server.txt", 'a') as fo:
+                fo.write(str(self.current_round) + "    " + request.sid + "    time_start_client_update:    " + str(time_start_client_update) + "\n")
             print("-------------------------------------------time_start_client_update: ", time_start_client_update-time_start)
             
             
@@ -265,7 +268,9 @@ class FLServer(object):
                     )
                     
                     time_end_js = time.time()
-                    f_js.write(str(self.current_round) + "    time_js:    " + str(time_end_js-time_start_js) + "\n")
+                    
+                    with open("time_jisuan.txt", 'a') as f_js:
+                        f_js.write(str(self.current_round) + "    time_js:    " + str(time_end_js-time_start_js) + "\n")
                     
                     aggr_train_loss, aggr_train_accuracy = self.global_model.aggregate_train_loss_accuracy(
                         [x['train_loss'] for x in self.current_round_client_updates],
@@ -327,10 +332,6 @@ class FLServer(object):
                 print("aggr_test_accuracy", aggr_test_accuracy)
                 print("== done ==")
                 self.eval_client_updates = None  # special value, forbid evaling again
-                
-                fo.close()
-                f_js.close()
-                f_client.close()
 
     
     # Note: we assume that during training the #workers will be >= MIN_NUM_WORKERS
@@ -394,13 +395,11 @@ if __name__ == '__main__':
     # When the application is in debug mode the Werkzeug development server is still used
     # and configured properly inside socketio.run(). In production mode the eventlet web server
     # is used if available, else the gevent web server is used.
-    
-    fo = open("timeline_server.txt", "w")
-    f_js = open("time_jisuan.txt", "w")
-    f_client = open("clients.txt", "w")
+
     
     time_start = time.time()
-    fo.write("*    " + "*    " + "time_start:    " + str(time_start) + "\n")
+    with open("timeline_server.txt", 'a') as fo:
+        fo.write("*    " + "*    " + "time_start:    " + str(time_start) + "\n")
     print("------------------------------------------------time_start: ", time_start)
        
     server = FLServer(GlobalModel_MNIST_CNN, "172.31.14.70", 5000)
