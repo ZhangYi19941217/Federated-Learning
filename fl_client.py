@@ -223,8 +223,6 @@ class FederatedClient(object):
                 'test_accuracy': test_accuracy
             }
             self.sio.emit('client_eval', resp)
-            self.fo.close()
-            self.f_training.close()
 
 
         self.sio.on('connect', on_connect)
