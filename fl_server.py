@@ -125,7 +125,7 @@ class GlobalModel_MNIST_CNN(GlobalModel):
     def __init__(self):
         super(GlobalModel_MNIST_CNN, self).__init__()
 
-    def build_model(self):
+    def build_model_cnn(self):
         # ~5MB worth of parameters
         model = Sequential()
         model.add(Conv2D(32, kernel_size=(3, 3),
@@ -143,6 +143,27 @@ class GlobalModel_MNIST_CNN(GlobalModel):
                       optimizer=keras.optimizers.Adadelta(),
                       metrics=['accuracy'])
         return model
+
+    def build_model(self):
+        # ~?MB worth of parameters
+        model = Sequential()
+        model.add(Conv2D(96,(11,11),strides=(4,4),input_shape=(227,227,3),padding='valid',activation='relu',kernel_initializer='uniform'))
+        model.add(MaxPooling2D(pool_size=(3,3),strides=(2,2)))
+        model.add(Conv2D(256,(5,5),strides=(1,1),padding='same',activation='relu',kernel_initializer='uniform'))
+        model.add(MaxPooling2D(pool_size=(3,3),strides=(2,2)))
+        model.add(Conv2D(384,(3,3),strides=(1,1),padding='same',activation='relu',kernel_initializer='uniform'))
+        model.add(Conv2D(384,(3,3),strides=(1,1),padding='same',activation='relu',kernel_initializer='uniform'))
+        model.add(Conv2D(256,(3,3),strides=(1,1),padding='same',activation='relu',kernel_initializer='uniform'))
+        model.add(MaxPooling2D(pool_size=(3,3),strides=(2,2)))
+        model.add(Flatten())
+        model.add(Dense(4096,activation='relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(4096,activation='relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(1000,activation='softmax'))
+        model.compile(loss='categorical_crossentropy',optimizer='sgd',metrics=['accuracy'])
+        return model
+
 
         
 ######## Flask server with Socket IO ########
