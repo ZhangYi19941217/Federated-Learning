@@ -48,6 +48,8 @@ class LocalModel(object):
     # return final weights, train loss, train accuracy
     def train_one_round(self):
         
+        print( self.model.summary() )
+        
         time_start_train_one_round = time.time()
         #print("------------------------------------------------time_start_train_one_round: ", time_start_train_one_round-time_start)
         #fo.write("time_start_train_one_round:    " + str(time_start_train_one_round) + "\n")
