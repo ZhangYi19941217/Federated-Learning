@@ -20,6 +20,8 @@ class Cifar10(DataSource):
     
     def __init__(self):
         (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+        y_train = y_train.flatten()
+        y_test = y_test.flatten()
         self.x = np.concatenate([x_train, x_test]).astype('float')
         self.y = np.concatenate([y_train, y_test])
         n = self.x.shape[0]
