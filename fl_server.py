@@ -165,7 +165,10 @@ class GlobalModel_MNIST_CNN(GlobalModel):
         model.add(Dropout(0.5))
         model.add(Dense(10,activation='softmax'))
 
-        model.compile(loss='categorical_crossentropy',optimizer='sgd',metrics=['accuracy'])
+        model.compile(loss=keras.losses.categorical_crossentropy,
+                      optimizer=keras.optimizers.Adadelta(),
+                      metrics=['accuracy'])
+        
         return model
 
 
