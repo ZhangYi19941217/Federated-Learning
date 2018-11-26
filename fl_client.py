@@ -10,7 +10,7 @@ from socketIO_client import SocketIO, LoggingNamespace
 from fl_server import obj_to_pickle_string, pickle_string_to_obj
 
 import datasource
-import datasource_CIFAR10
+#import datasource_CIFAR10
 import threading
 
 class LocalModel(object):
