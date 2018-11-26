@@ -1,5 +1,6 @@
 from fl_client import FederatedClient
 import datasource
+import datasource_CIFAR10
 import multiprocessing
 import threading
 import time
