@@ -1,7 +1,7 @@
 import numpy as np
 import keras
 import random
-from keras.datasets import mnist
+from keras.datasets import cifar10
 from keras import backend as K
 
 class DataSource(object):
@@ -13,13 +13,13 @@ class DataSource(object):
         raise NotImplementedError()
 
 
-class Mnist(DataSource):
+class Cifar10(DataSource):
 
     IID = False
     MAX_NUM_CLASSES_PER_CLIENT = 5
     
     def __init__(self):
-        (x_train, y_train), (x_test, y_test) = mnist.load_data()
+        (x_train, y_train), (x_test, y_test) = cifar10.load_data()
         self.x = np.concatenate([x_train, x_test]).astype('float')
         self.y = np.concatenate([y_train, y_test])
         n = self.x.shape[0]
@@ -40,7 +40,7 @@ class Mnist(DataSource):
     
     def gen_dummy_non_iid_weights(self):
         self.classes = np.array(range(10))
-        num_classes_this_client = random.randint(1, Mnist.MAX_NUM_CLASSES_PER_CLIENT + 1)
+        num_classes_this_client = random.randint(1, Cifar10.MAX_NUM_CLASSES_PER_CLIENT + 1)
         classes_this_client = random.sample(self.classes.tolist(), num_classes_this_client)
         w = np.array([random.random() for _ in range(num_classes_this_client)])
         weights = np.array([0.] * self.classes.shape[0])
@@ -53,9 +53,9 @@ class Mnist(DataSource):
     # assuming client server already agreed on data format
     def post_process(self, xi, yi):
         if K.image_data_format() == 'channels_first':
-            xi = xi.reshape(1, xi.shape[0], xi.shape[1])
+            xi = xi.reshape(3, xi.shape[0], xi.shape[1])
         else:
-            xi = xi.reshape(xi.shape[0], xi.shape[1], 1)
+            xi = xi.reshape(xi.shape[0], xi.shape[1], 3)
 
         y_vec = keras.utils.to_categorical(yi, self.classes.shape[0])
         return xi / 255., y_vec
@@ -116,7 +116,7 @@ class Mnist(DataSource):
 
 
 if __name__ == "__main__":
-    m = Mnist()
+    m = Cifar10()
     # res = m.partitioned_by_rows(9)
     # print(res["test"][1].shape)
     for _ in range(10):
