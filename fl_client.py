@@ -55,6 +55,9 @@ class LocalModel(object):
         self.model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
+        
+        
+        print(self.x_train.shape, self.y_train.shape, self.x_valid.shape, self.y_valid.shape)
 
         self.model.fit(self.x_train, self.y_train,
                   epochs=self.model_config['epoch_per_round'],
