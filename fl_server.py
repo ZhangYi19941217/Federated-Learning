@@ -147,7 +147,7 @@ class GlobalModel_MNIST_CNN(GlobalModel):
     def build_model(self):
         # ~?MB worth of parameters
         model = Sequential()
-        model.add(Conv2D(64,(3,3),strides=(1,1),input_shape=(32,32,3),padding='same',activation='relu',kernel_initializer='he_normal')
+        model.add(Conv2D(64,(3,3),strides=(1,1),input_shape=(32,32,3),padding='same',activation='relu',kernel_initializer='he_normal'))
         model.add(Conv2D(64,(3,3),strides=(1,1),padding='same',activation='relu',kernel_initializer='he_normal'))
         model.add(MaxPooling2D(pool_size=(2,2),strides=(2,2), padding='same'))
         
