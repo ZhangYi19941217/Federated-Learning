@@ -93,7 +93,7 @@ class Cifar10(DataSource):
         
         print("1111111111111111")
         
-        my_class_distr = [1. / self.classes.shape[0] * self.classes.shape[0]] if Mnist.IID \
+        my_class_distr = [1. / self.classes.shape[0] * self.classes.shape[0]] if Cifar10.IID \
                 else self.gen_dummy_non_iid_weights()
         
         
