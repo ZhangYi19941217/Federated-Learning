@@ -7,7 +7,7 @@ import time
 
 def start_client(fo_name, f_training_name):
     #c = FederatedClient("172.31.14.70", 5000, datasource_CIFAR10.Cifar10, fo_name, f_training_name)
-    c = FederatedClient("172.31.14.70", 5000, datasource.mnist, fo_name, f_training_name)
+    c = FederatedClient("172.31.14.70", 5000, datasource.Mnist, fo_name, f_training_name)
 
 
 if __name__ == '__main__':
