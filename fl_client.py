@@ -6,7 +6,7 @@ import json
 import pickle
 import codecs
 from keras.models import model_from_json
-from socketIO_client_nexus import SocketIO, LoggingNamespace
+from socketIO_client import SocketIO, LoggingNamespace
 from fl_server import obj_to_pickle_string, pickle_string_to_obj
 
 import datasource
