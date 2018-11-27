@@ -163,7 +163,7 @@ class GlobalModel_MNIST_CNN(GlobalModel):
         model.add(BatchNormalization())
         
         model.add(Flatten())
-        model.add(Dense(2048, activation='tanh')) 
+        model.add(Dense(1024, activation='tanh')) 
         model.add(Dropout(0.5))
         model.add(Dense(1024, activation='tanh')) 
         model.add(Dropout(0.5))
