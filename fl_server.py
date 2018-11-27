@@ -126,7 +126,7 @@ class GlobalModel_MNIST_CNN(GlobalModel):
     def __init__(self):
         super(GlobalModel_MNIST_CNN, self).__init__()
 
-    def build_model(self):
+    def build_model_CNN(self):
         # ~5MB worth of parameters
         model = Sequential()
         model.add(Conv2D(32, kernel_size=(3, 3),
@@ -145,10 +145,10 @@ class GlobalModel_MNIST_CNN(GlobalModel):
                       metrics=['accuracy'])
         return model
 
-    def build_model_alex(self):
+    def build_model(self):
         # ~?MB worth of parameters
         model = Sequential()
-        model.add(Conv2D(96,(3,3),strides=(2,2),input_shape=(28,28,1),padding='same',activation='relu'))
+        model.add(Conv2D(96,(3,3),strides=(2,2),input_shape=(32,32,3),padding='same',activation='relu'))
         model.add(MaxPooling2D(pool_size=(2,2),strides=(2,2))) 
         model.add(BatchNormalization())
         
