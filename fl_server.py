@@ -165,7 +165,7 @@ class GlobalModel_MNIST_CNN(GlobalModel):
         model.add(Flatten())
         model.add(Dense(4096, activation='tanh')) 
         model.add(Dropout(0.5))
-        model.add(Dense(4096, activation='tanh')) 
+        model.add(Dense(2048, activation='tanh')) 
         model.add(Dropout(0.5))
         model.add(Dense(10,activation='softmax'))
 
@@ -183,9 +183,9 @@ class GlobalModel_MNIST_CNN(GlobalModel):
 
 class FLServer(object):
     
-    MIN_NUM_WORKERS = 1
+    MIN_NUM_WORKERS = 50
     MAX_NUM_ROUNDS = 3
-    NUM_CLIENTS_CONTACTED_PER_ROUND = 1
+    NUM_CLIENTS_CONTACTED_PER_ROUND = 50
     ROUNDS_BETWEEN_VALIDATIONS = 2
 
     def __init__(self, global_model, host, port):
