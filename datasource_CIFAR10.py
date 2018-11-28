@@ -27,7 +27,14 @@ class Cifar10(DataSource):
         n = self.x.shape[0]
         idx = np.arange(n)
         np.random.shuffle(idx)
-        self.x = self.x[idx]  # n * 28 * 28  
+        
+        self.x_ = []
+        for i in idx:
+            self.x_.append(x[i])
+        for i in range(n):
+            self.x[i] = self.x_[i]
+        
+        #self.x = self.x[idx]  # n * 28 * 28  
         self.y = self.y[idx]  # n * 1
         data_split = (0.6, 0.3, 0.1)
         num_train = int(n * data_split[0])
