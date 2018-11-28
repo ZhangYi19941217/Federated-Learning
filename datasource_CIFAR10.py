@@ -30,7 +30,7 @@ class Cifar10(DataSource):
         
         self.x_ = []
         for i in idx:
-            self.x_.append(x[i])
+            self.x_.append(self.x[i])
         for i in range(n):
             self.x[i] = self.x_[i]
         
