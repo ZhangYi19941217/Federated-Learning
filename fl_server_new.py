@@ -68,7 +68,7 @@ class GlobalModel(object):
         
         for c in range(len(client_weights)):
             for i in range(len(new_weights)):
-                if client_weights[c][i]=='K' or client_weights[c][i]=='g'
+                if client_weights[c][i]=='K' or client_weights[c][i]=='g':
                     total_size -= client_sizes[c]
                     break;
                 
