@@ -62,7 +62,7 @@ class GlobalModel(object):
                     total_size -= client_sizes[c]
                     break;
                 
-        print("------------------------------------------------------------------: " + type(client_weights[c][i]) )
+        print("------------------------------------------------------------------: " + type(str(client_weights[c][i])) )
         
         
         print("------------total_size=", total_size)
