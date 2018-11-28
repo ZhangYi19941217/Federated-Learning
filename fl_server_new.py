@@ -24,14 +24,6 @@ from flask_socketio import *
 # https://flask-socketio.readthedocs.io/en/latest/
 
 
-def emit_Model(model_id, current_round, current_weights, VALIDATIONS, rid):
-    emit('request_update', {
-        'model_id': model_id,
-        'round_number': current_round,
-        'current_weights': current_weights,
-        'weights_format': 'pickle',
-        'run_validation': current_round % VALIDATIONS == 0,
-    }, room=rid)
   
 class GlobalModel(object):
     """docstring for GlobalModel"""
@@ -375,6 +367,15 @@ class FLServer(object):
                 print("== done ==")
                 self.eval_client_updates = None  # special value, forbid evaling again
 
+    
+    def emit_Model(model_id, current_round, current_weights, VALIDATIONS, rid):
+        emit('request_update', {
+            'model_id': model_id,
+            'round_number': current_round,
+            'current_weights': current_weights,
+            'weights_format': 'pickle',
+            'run_validation': current_round % VALIDATIONS == 0,
+        }, room=rid)
     
     # Note: we assume that during training the #workers will be >= MIN_NUM_WORKERS
     def train_next_round(self):
