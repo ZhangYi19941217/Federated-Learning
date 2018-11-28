@@ -12,7 +12,7 @@ def start_client(fo_name, f_training_name):
 
 if __name__ == '__main__':
     jobs = []
-    for i in range(6):
+    for i in range(4):
         # threading.Thread(target=start_client).start()
         print("start client" + str(i))
         fo_name = "timeline_clinet" + str(i) + ".txt"
