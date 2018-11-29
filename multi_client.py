@@ -12,14 +12,19 @@ def start_client(fo_name, f_training_name):
 
 if __name__ == '__main__':
     jobs = []
-    for i in range(1):
+    for i in range(8):
         # threading.Thread(target=start_client).start()
         print("start client" + str(i))
         fo_name = "timeline_clinet" + str(i) + ".txt"
         f_training_name = "time_training" + str(i) + ".txt" 
         
-        p = multiprocessing.Process(target=start_client, args=(fo_name,f_training_name))
-        jobs.append(p)
-        p.start()
+        t = threading.Thread( target=start_client, args=(fo_name, f_training_name, ) )
+        t.start()
+        jobs.append(t)
+        t.join()
+        
+        #p = multiprocessing.Process(target=start_client, args=(fo_name,f_training_name))
+        #jobs.append(p)
+        #p.start()
         #time.sleep(1)
     # TODO: randomly kill
