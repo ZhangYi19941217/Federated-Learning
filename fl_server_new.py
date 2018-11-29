@@ -411,7 +411,9 @@ class FLServer(object):
         for rid in client_sids_selected:
             t = pool.submit( self.model_id, self.current_round, obj_to_pickle_string(self.global_model.current_weights), FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid )
             jobs.append(t)
-        pool.shutdown()
+        
+        for tid in jobs:
+            print( tid.result() )
         
         #for tid in jobs:
             #tid.start()
