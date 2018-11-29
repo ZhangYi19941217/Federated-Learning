@@ -406,19 +406,19 @@ class FLServer(object):
             #'run_validation': current_round % VALIDATIONS == 0,
         #}, room=rid)
         
-        pool = ThreadPoolExecutor(50)
+        #pool = ThreadPoolExecutor(50)
         jobs = []
         for rid in client_sids_selected:
-            t = pool.submit( self.emit_Model, self.model_id, self.current_round, obj_to_pickle_string(self.global_model.current_weights), FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid )
+            t = threading.Thread( target=self.emit_Model, args=(self.model_id, self.current_round, obj_to_pickle_string(self.global_model.current_weights), FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid, ) )
             jobs.append(t)
         
-        for tid in jobs:
-            print( tid.result() )
+        #for tid in jobs:
+            #print( tid.result() )
         
-        #for tid in jobs:
-            #tid.start()
-        #for tid in jobs:
-            #tid.join()
+        for tid in jobs:
+            tid.start()
+        for tid in jobs:
+            tid.join()
             
             
         time_finish_train_next_round = time.time()
