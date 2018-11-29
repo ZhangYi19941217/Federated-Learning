@@ -185,9 +185,9 @@ class GlobalModel_MNIST_CNN(GlobalModel):
 
 class FLServer(object):
     
-    MIN_NUM_WORKERS = 50
+    MIN_NUM_WORKERS = 4
     MAX_NUM_ROUNDS = 3
-    NUM_CLIENTS_CONTACTED_PER_ROUND = 50
+    NUM_CLIENTS_CONTACTED_PER_ROUND = 4
     ROUNDS_BETWEEN_VALIDATIONS = 2
 
     def __init__(self, global_model, host, port):
@@ -367,16 +367,16 @@ class FLServer(object):
                 print("== done ==")
                 self.eval_client_updates = None  # special value, forbid evaling again
 
-    from flask import copy_current_request_context
-    @copy_current_request_context
+    
     def emit_Model(self, model_id, current_round, current_weights, VALIDATIONS, rid):
-        emit('request_update', {
-            'model_id': model_id,
-            'round_number': current_round,
-            'current_weights': current_weights,
-            'weights_format': 'pickle',
-            'run_validation': current_round % VALIDATIONS == 0,
-        }, room=rid)
+        with self.app.test_request_context():
+            emit('request_update', {
+                'model_id': model_id,
+                'round_number': current_round,
+                'current_weights': current_weights,
+                'weights_format': 'pickle',
+                'run_validation': current_round % VALIDATIONS == 0,
+            }, room=rid)
     
     # Note: we assume that during training the #workers will be >= MIN_NUM_WORKERS
     def train_next_round(self):
@@ -396,7 +396,7 @@ class FLServer(object):
         with open("timeline_server.txt", 'a') as fo:
             fo.write(str(self.current_round) + "    " + "rid" + "    time_start_train_next_round:    " + str(time_start_train_next_round) + "\n")
         
-        
+
         #emit_Model = lambda model_id, current_round, current_weights, VALIDATIONS, rid : emit('request_update', {
             #'model_id': model_id,
             #'round_number': current_round,
