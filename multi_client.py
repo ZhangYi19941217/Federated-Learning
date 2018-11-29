@@ -21,7 +21,9 @@ if __name__ == '__main__':
         t = threading.Thread( target=start_client, args=(fo_name, f_training_name, ) )
         t.start()
         jobs.append(t)
-        t.join()
+    
+    for tid in jobs:
+        tid.join()
         
         #p = multiprocessing.Process(target=start_client, args=(fo_name,f_training_name))
         #jobs.append(p)
