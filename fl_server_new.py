@@ -394,11 +394,17 @@ class FLServer(object):
         print("-----------------------------------------time_start_train_next_round: ", time_start_train_next_round-time_start)
         with open("timeline_server.txt", 'a') as fo:
             fo.write(str(self.current_round) + "    " + "rid" + "    time_start_train_next_round:    " + str(time_start_train_next_round) + "\n")
-    
+        
+        jobs = []
         for rid in client_sids_selected:
             t = threading.Thread( target=FLServer.emit_Model, args=(self, self.model_id, self.current_round, self.global_model.current_weights, FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid,  ) )
-            t.start()
-            t.join()
+            jobs.append(t)
+        
+        for tid in jobs:
+            tid.start()
+        for tid in jobs:
+            tid.join()
+            
             
         time_finish_train_next_round = time.time()
         print("---------------------------------------time_finish_train_next_round: ", time_finish_train_next_round-time_start)
