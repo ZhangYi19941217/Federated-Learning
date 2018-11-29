@@ -395,9 +395,19 @@ class FLServer(object):
         with open("timeline_server.txt", 'a') as fo:
             fo.write(str(self.current_round) + "    " + "rid" + "    time_start_train_next_round:    " + str(time_start_train_next_round) + "\n")
         
+        
+        emit_Model = lambda model_id, current_round, current_weights, VALIDATIONS, rid : emit('request_update', {
+            'model_id': model_id,
+            'round_number': current_round,
+            'current_weights': current_weights,
+            'weights_format': 'pickle',
+            'run_validation': current_round % VALIDATIONS == 0,
+        }, room=rid)
+        
+        
         jobs = []
         for rid in client_sids_selected:
-            t = threading.Thread( target=FLServer.emit_Model, args=(self, self.model_id, self.current_round, self.global_model.current_weights, FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid,  ) )
+            t = threading.Thread( target=emit_Model, args=(self.model_id, self.current_round, self.global_model.current_weights, FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid,  ) )
             jobs.append(t)
         
         for tid in jobs:
