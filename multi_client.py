@@ -19,11 +19,13 @@ if __name__ == '__main__':
         f_training_name = "time_training" + str(i) + ".txt" 
         
         t = threading.Thread( target=start_client, args=(fo_name, f_training_name, ) )
-        t.start()
         jobs.append(t)
     
-    #for tid in jobs:
-        #tid.join()
+    for tid in jobs:
+        tid.start()
+    
+    for tid in jobs:
+        tid.join()
         
         #p = multiprocessing.Process(target=start_client, args=(fo_name,f_training_name))
         #jobs.append(p)
