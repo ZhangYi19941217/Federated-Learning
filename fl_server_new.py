@@ -2,6 +2,7 @@ import pickle
 import keras
 import uuid
 import threading
+from concurrent.futures import ThreadPoolExecutor
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
@@ -405,16 +406,17 @@ class FLServer(object):
             #'run_validation': current_round % VALIDATIONS == 0,
         #}, room=rid)
         
-        
+        pool = ThreadPoolExecutor(50)
         jobs = []
         for rid in client_sids_selected:
-            t = threading.Thread( target=self.emit_Model, args=(self.model_id, self.current_round, obj_to_pickle_string(self.global_model.current_weights), FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid,  ) )
+            t = pool.submit( self.model_id, self.current_round, obj_to_pickle_string(self.global_model.current_weights), FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid )
             jobs.append(t)
+        pool.shutdown()
         
-        for tid in jobs:
-            tid.start()
-        for tid in jobs:
-            tid.join()
+        #for tid in jobs:
+            #tid.start()
+        #for tid in jobs:
+            #tid.join()
             
             
         time_finish_train_next_round = time.time()
