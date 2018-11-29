@@ -316,7 +316,7 @@ class FLServer(object):
                     print("aggr_train_loss", aggr_train_loss)
                     print("aggr_train_accuracy", aggr_train_accuracy)
                     
-                    if 'valid_loss' in self.current_round_client_updates[0]:
+                    if  len(self.current_round_client_updates) > 0 and 'valid_loss' in self.current_round_client_updates[0]:
                         aggr_valid_loss, aggr_valid_accuracy = self.global_model.aggregate_valid_loss_accuracy(
                             [x['valid_loss'] for x in self.current_round_client_updates],
                             [x['valid_accuracy'] for x in self.current_round_client_updates],
