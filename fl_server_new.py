@@ -409,7 +409,7 @@ class FLServer(object):
         pool = ThreadPoolExecutor(50)
         jobs = []
         for rid in client_sids_selected:
-            t = pool.submit( self.model_id, self.current_round, obj_to_pickle_string(self.global_model.current_weights), FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid )
+            t = pool.submit( emit_Model, self.model_id, self.current_round, obj_to_pickle_string(self.global_model.current_weights), FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid )
             jobs.append(t)
         
         for tid in jobs:
