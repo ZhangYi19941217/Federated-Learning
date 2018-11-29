@@ -370,7 +370,7 @@ class FLServer(object):
     
     def emit_Model(self, model_id, current_round, current_weights, VALIDATIONS, rid):
         with self.app.test_request_context():
-            socketio.emit('request_update', {
+            self.socketio.emit('request_update', {
                 'model_id': model_id,
                 'round_number': current_round,
                 'current_weights': current_weights,
