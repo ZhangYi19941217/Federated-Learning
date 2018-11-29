@@ -408,7 +408,7 @@ class FLServer(object):
         
         jobs = []
         for rid in client_sids_selected:
-            t = threading.Thread( target=self.emit_Model, args=(self.model_id, self.current_round, self.global_model.current_weights, FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid,  ) )
+            t = threading.Thread( target=self.emit_Model, args=(self.model_id, self.current_round, obj_to_pickle_string(self.global_model.current_weights), FLServer.ROUNDS_BETWEEN_VALIDATIONS, rid,  ) )
             jobs.append(t)
         
         for tid in jobs:
