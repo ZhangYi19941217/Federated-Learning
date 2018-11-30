@@ -1,4 +1,7 @@
 import pickle
+import eventlet
+eventlet.monkey_patch()
+
 import keras
 import uuid
 import threading
