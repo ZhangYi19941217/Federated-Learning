@@ -281,5 +281,5 @@ if __name__ == "__main__":
     fo_name = "timeline_clinet.txt"
     f_training_name = "time_training.txt"
     
-    FederatedClient("172.31.14.70", 5000, datasource_CIFAR10.Cifar10, fo_name, f_training_name)
-    #FederatedClient("172.31.14.70", 5000, datasource.Mnist, fo_name, f_training_name)
+    #FederatedClient("172.31.20.224, datasource_CIFAR10.Cifar10, fo_name, f_training_name)
+    FederatedClient("172.31.20.224", 5000, datasource.Mnist, fo_name, f_training_name)
